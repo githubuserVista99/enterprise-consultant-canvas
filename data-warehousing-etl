@@ -1,0 +1,19 @@
+-- =========================================================================
+-- Title: Unified Staging to Kimball Star Schema Dimensional Transformation
+-- Description: flattens multi-source relational inputs into analytical formats.
+-- =========================================================================
+
+-- Example Fact Table showing proper structural keys and constraint logic
+CREATE TABLE dw_analytics.fact_sales_transactions (
+    sales_fact_key BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    date_key INT NOT NULL,          -- Conformed Dimension Link
+    customer_key INT NOT NULL,      -- Conformed Dimension Link
+    product_key INT NOT NULL,       -- Conformed Dimension Link
+    source_system_id VARCHAR(10),   -- e.g., 'SAP_BW', 'MYSQL_PROD'
+    gross_amount_usd NUMERIC(18, 4),
+    tax_amount_usd NUMERIC(18, 4),
+    net_amount_usd NUMERIC(18, 4)
+);
+
+
+
