@@ -1,0 +1,23 @@
+-- =========================================================================
+-- Title: Oracle RAC Interconnect & Global Cache Performance Profiler
+-- Description: Analyzes multi-node cluster interconnect wait events and block transfers.
+-- Author: Enterprise Database Architect (15+ Years Experience)
+-- =========================================================================
+
+SET LINESIZE 200
+SET PAGESIZE 50
+COL inst_id FORMAT 999 HEAD 'ID'
+COL event FORMAT A35 HEAD 'CLUSTER WAIT EVENT'
+COL total_waits FORMAT 999,999,999 HEAD 'TOTAL WAITS'
+COL time_waited_micro FORMAT 999,999,999,999 HEAD 'TOTAL TIME (µs)'
+
+PROMPT [INFO] Extracting System-Wide Cluster Wait Events...
+SELECT 
+    inst_id,
+    event,
+    total_waits,
+    time_waited_micro,
+    round(time_waited_micro / nullif(total_waits, 0), 2) as avg_wait_time_micro
+FROM gv$system_event
+WHERE wait_class = 'Cluster'
+ORDER BY time_waited_micro DESC;
